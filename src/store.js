@@ -1,6 +1,17 @@
+import {
+  compose,
+  createStore
+} from 'redux'
+import rootReducer from './reducers/rootReducer';
 
 
-const store = {
+const createStoreWithMiddleware = compose(
+  window.devToolsExtension ? window.devToolsExtension() : f => f
+)(createStore);
+
+
+// columns and cards will not have unique id cross-board. Is this a bad idea? Hrm.
+const initialState = {
   boards: {
     byId: {
       0: {
@@ -11,44 +22,47 @@ const store = {
           byId: {
             0: {
               id: 0,
-              itemsById: [0,1,2]
+              title: 'todo',
+              cardIds: [0,1,2]
             },
             1: {
               id: 1,
-              itemsById: [3,4]
+              title: 'doing',
+              cardIds: [3,4]
             },
             2: {
               id: 2,
-              itemsById: [5]
+              title: 'done',
+              cardIds: [5]
             }
           },
           allIds: [0,1,2]
         },
-        items: {
+        cards: {
           byId: {
             0: {
               id: 0,
-              text: 'item 0'
+              text: 'card 0'
             },
             1: {
               id: 1,
-              text: 'item 1'
+              text: 'card 1'
             },
             2: {
               id: 2,
-              text: 'item 2'
+              text: 'card 2'
             },
             3: {
               id: 3,
-              text: 'item 3'
+              text: 'card 3'
             },
             4: {
               id: 4,
-              text: 'item 4'
+              text: 'card 4'
             },
             5: {
               id: 5,
-              text: 'item 5'
+              text: 'card 5'
             }
           },
           allIds: [0,1,2,3,4,5]
@@ -59,6 +73,6 @@ const store = {
   }  
 }
 
-
+const store = createStoreWithMiddleware(rootReducer, initialState);
 
 export default store;

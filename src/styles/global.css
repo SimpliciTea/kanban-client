@@ -47,13 +47,13 @@ body {
   border-bottom: solid 1px white;
 }
 
-.item-list {
+.card-list {
   list-style: none;
   margin: 0px;
   padding: 0px;
 }
 
-.item {
+.card {
   margin: 10px 0px;
   background-color: white;
   padding: 5px;
