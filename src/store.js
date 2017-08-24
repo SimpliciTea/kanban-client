@@ -42,27 +42,76 @@ const initialState = {
           byId: {
             0: {
               id: 0,
-              text: 'card 0'
+              text: 'card 0',
+              checklists: {
+                byId: {
+                  0: {
+                    id: 0,
+                    title: 'checklistTitle 0',
+                    items: {
+                      byId: {
+                        0: {
+                          id: 0,
+                          text: 'checklistItem 0 text',
+                          isChecked: false
+                        }
+                      },
+                      allIds: [0]
+                    }
+                  }
+                },
+                allIds: [0]
+              }
             },
             1: {
               id: 1,
-              text: 'card 1'
+              text: 'card 1',
+              checklists: {
+                byId: {
+
+                },
+                allIds: []
+              }
             },
             2: {
               id: 2,
-              text: 'card 2'
+              text: 'card 2',
+              checklists: {
+                byId: {
+
+                },
+                allIds: []
+              }
             },
             3: {
               id: 3,
-              text: 'card 3'
+              text: 'card 3',
+              checklists: {
+                byId: {
+
+                },
+                allIds: []
+              }
             },
             4: {
               id: 4,
-              text: 'card 4'
+              text: 'card 4',
+              checklists: {
+                byId: {
+
+                },
+                allIds: []
+              }
             },
             5: {
               id: 5,
-              text: 'card 5'
+              text: 'card 5',
+              checklists: {
+                byId: {
+
+                },
+                allIds: []
+              }
             }
           },
           allIds: [0,1,2,3,4,5]

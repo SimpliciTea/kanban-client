@@ -1,6 +1,7 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
+import * as actions from '../../actions/cardActions';
 
 import Column from '../column/Column';
 
@@ -14,7 +15,8 @@ class Board extends React.Component {
 
   render() {
     const { id, columnIds, title } = this.props;
-    
+    console.log(this.props);
+
     return (
       <div className="board">
         <h1>{title}</h1>
@@ -38,4 +40,4 @@ const mapStateToProps = (state, ownProps) => {
   }
 }
 
-export default connect(mapStateToProps)(Board);
+export default connect(mapStateToProps, actions)(Board);
