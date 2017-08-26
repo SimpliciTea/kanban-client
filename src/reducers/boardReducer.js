@@ -1,19 +1,49 @@
 import columnReducer from './columnReducer';
 import cardReducer from './cardReducer';
 
-import { CREATE_CARD } from '../actions/types';
+import { 
+  ADD_CARD,
+  ATTACH_CARD,
+  DETACH_CARD
+} from '../actions/types';
+
 
 export default function (state = {}, action) {
   switch(action.type) {
+    case ADD_CARD: {
+      const { boardId } = action.payload; 
+      const board = state.byId[boardId];
 
-    /* ITEM ACTIONS */
-    case CREATE_CARD:
-      console.log(CREATE_CARD);
-      return {...state, cards: cardReducer(state.cards, action)};
+      return {
+        ...state,
+        byId: {
+          ...state.byId,
+          [boardId]: {
+            ...board,
+            cards: cardReducer(board.cards, action),
+            columns: columnReducer(board.columns, action)
+          }
+        }
+      };
+    }
 
-    /* COLUMN ACTIONS */
-    case 'EDIT_COLUMN':
-      return {...state, columns: columnReducer(state.columns, action)};
+    case ATTACH_CARD:
+    case DETACH_CARD: {
+      const { boardId } = action.payload;
+      const board = state.byId[boardId];
+
+      return {
+        ...state,
+        byId: {
+          ...state.byId,
+          [boardId]: {
+            ...board,
+            columns: columnReducer(board.columns, action)
+          }
+        }
+      }
+    }
+
     default: 
       return state;
   }

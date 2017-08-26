@@ -1,1 +1,6 @@
-export const CREATE_CARD = 'CREATE_CARD';
+/* CARD ACTION TYPES */
+export const ADD_CARD = 'ADD_CARD';
+
+/* COLUMN ACTION TYPES */
+export const ATTACH_CARD = 'ATTACH_CARD';
+export const DETACH_CARD = 'DETACH_CARD';

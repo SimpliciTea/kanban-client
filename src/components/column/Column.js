@@ -1,6 +1,7 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
+import * as actions from '../../actions/boardActions';
 
 import Card from '../card/Card';
 
@@ -10,6 +11,11 @@ class Column extends React.Component {
     boardId: PropTypes.number.isRequired,
     title: PropTypes.string,
     cardIds: PropTypes.arrayOf(PropTypes.number)
+  }
+
+
+  handleAddCard() {
+    this.props.addCard(this.props.boardId, this.props.id);
   }
 
 
@@ -26,6 +32,10 @@ class Column extends React.Component {
                                        boardId={boardId} />
           )}
         </ul>
+
+        <div className="column-controls">
+          <button onClick={this.handleAddCard.bind(this)}>+</button>
+        </div>
       </div>
     )
   }
@@ -44,4 +54,4 @@ const mapStateToProps = (state, ownProps) => {
 }
 
 
-export default connect(mapStateToProps)(Column);
+export default connect(mapStateToProps, actions)(Column);

@@ -58,3 +58,7 @@ body {
   background-color: white;
   padding: 5px;
 }
+
+.card-control--delete {
+  float: right;
+}

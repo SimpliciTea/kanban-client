@@ -1,11 +1,14 @@
 import {
   compose,
+  applyMiddleware,
   createStore
 } from 'redux'
+import thunk from 'redux-thunk';
 import rootReducer from './reducers/rootReducer';
 
 
 const createStoreWithMiddleware = compose(
+  applyMiddleware(thunk),
   window.devToolsExtension ? window.devToolsExtension() : f => f
 )(createStore);
 
@@ -42,12 +45,14 @@ const initialState = {
           byId: {
             0: {
               id: 0,
-              text: 'card 0',
+              description: 'card 0',
+              isExpanded: false,
               checklists: {
                 byId: {
                   0: {
                     id: 0,
                     title: 'checklistTitle 0',
+                    isEditing: false,
                     items: {
                       byId: {
                         0: {
@@ -65,7 +70,8 @@ const initialState = {
             },
             1: {
               id: 1,
-              text: 'card 1',
+              description: 'card 1',
+              isExpanded: false,
               checklists: {
                 byId: {
 
@@ -75,7 +81,8 @@ const initialState = {
             },
             2: {
               id: 2,
-              text: 'card 2',
+              description: 'card 2',
+              isExpanded: false,
               checklists: {
                 byId: {
 
@@ -85,7 +92,8 @@ const initialState = {
             },
             3: {
               id: 3,
-              text: 'card 3',
+              description: 'card 3',
+              isExpanded: false,
               checklists: {
                 byId: {
 
@@ -95,7 +103,8 @@ const initialState = {
             },
             4: {
               id: 4,
-              text: 'card 4',
+              description: 'card 4',
+              isExpanded: false,
               checklists: {
                 byId: {
 
@@ -105,7 +114,8 @@ const initialState = {
             },
             5: {
               id: 5,
-              text: 'card 5',
+              description: 'card 5',
+              isExpanded: false,
               checklists: {
                 byId: {
 
