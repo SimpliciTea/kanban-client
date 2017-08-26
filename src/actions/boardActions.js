@@ -1,5 +1,6 @@
 import { 
-  ADD_CARD,
+  CREATE_CARD,
+  DELETE_CARD,
   ATTACH_CARD,
   DETACH_CARD
 } from './types'; 
@@ -28,18 +29,16 @@ import {
 */
 
 
-// create the new card with the next id,
-// then attach the new card to the first column.
-
-export function addCard(boardId, colId) {
+export function createCard(boardId, colId) {
   return (dispatch, getState) => {
     const cardIds = getState().boards.byId[boardId].cards.allIds;
     // if no ids, will return 1
     const nextId = Math.max(...cardIds) + 1;
     
+
     // add card to board's card list
     dispatch({
-      type: ADD_CARD,
+      type: CREATE_CARD,
       payload: {
         boardId,
         nextId
@@ -57,8 +56,14 @@ export function deleteCard(boardId, colId, cardId) {
     // first we detach the card from the column it belongs to
     dispatch(detachCard(boardId, colId, cardId));
 
-    // and then we delete the card from the board's card object
-    
+    // and then we delete the card from the board's cards object
+    dispatch({
+      type: DELETE_CARD,
+      payload: {
+        boardId,
+        cardId
+      }
+    });
   }
 }
 

@@ -10,12 +10,13 @@ class Column extends React.Component {
     id: PropTypes.number.isRequired,
     boardId: PropTypes.number.isRequired,
     title: PropTypes.string,
-    cardIds: PropTypes.arrayOf(PropTypes.number)
+    cardIds: PropTypes.arrayOf(PropTypes.number),
+    createCard: PropTypes.func.isRequired
   }
 
 
   handleAddCard() {
-    this.props.addCard(this.props.boardId, this.props.id);
+    this.props.createCard(this.props.boardId, this.props.id);
   }
 
 

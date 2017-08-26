@@ -10,9 +10,8 @@ export default function (state = {}, action) {
   switch(action.type) {
     case ATTACH_CARD: 
       return attachCard(state, action.payload);
-    case DETACH_CARD: {
+    case DETACH_CARD: 
       return detachCard(state, action.payload);
-    }
     default: 
       return state;
   }

@@ -2,7 +2,8 @@ import columnReducer from './columnReducer';
 import cardReducer from './cardReducer';
 
 import { 
-  ADD_CARD,
+  CREATE_CARD,
+  DELETE_CARD,
   ATTACH_CARD,
   DETACH_CARD
 } from '../actions/types';
@@ -10,7 +11,8 @@ import {
 
 export default function (state = {}, action) {
   switch(action.type) {
-    case ADD_CARD: {
+    case CREATE_CARD:
+    case DELETE_CARD: {
       const { boardId } = action.payload; 
       const board = state.byId[boardId];
 
@@ -20,8 +22,7 @@ export default function (state = {}, action) {
           ...state.byId,
           [boardId]: {
             ...board,
-            cards: cardReducer(board.cards, action),
-            columns: columnReducer(board.columns, action)
+            cards: cardReducer(board.cards, action)
           }
         }
       };
