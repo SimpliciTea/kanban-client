@@ -4,6 +4,7 @@ import PropTypes from 'prop-types';
 import * as actions from '../../actions/boardActions';
 
 import Card from '../card/Card';
+import DropFrame from './_dropframe';
 
 class Column extends React.Component {
   static propTypes = {
@@ -11,7 +12,8 @@ class Column extends React.Component {
     boardId: PropTypes.number.isRequired,
     title: PropTypes.string,
     cardIds: PropTypes.arrayOf(PropTypes.number),
-    createCard: PropTypes.func.isRequired
+    createCard: PropTypes.func.isRequired,
+    toggleBoardDragState: PropTypes.func.isRequired
   }
 
 
@@ -22,16 +24,26 @@ class Column extends React.Component {
 
   render() {
     const { id, boardId, title, cardIds } = this.props;
+    let orderId = 0;
 
     return (
       <div className="column">
         <h2 className="column-header">{title}</h2>
         <ul className="card-list">
-          {cardIds.map(cardId => <Card key={cardId}
-                                       id={cardId}
-                                       colId={id}
-                                       boardId={boardId} />
-          )}
+          
+          {cardIds.map((cardId) => {
+            return ([
+              <DropFrame orderId={orderId++} colId={this.props.id}/>,
+              <Card key={cardId}
+                    id={cardId}
+                    colId={id}
+                    boardId={boardId} 
+                    toggleBoardDragState={this.props.toggleBoardDragState}/>
+            ])
+          })}
+
+          {/* and a trailing drop-frame */}
+          <DropFrame orderId={orderId} colId={this.props.id}/>
         </ul>
 
         <div className="column-controls">

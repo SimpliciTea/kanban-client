@@ -46,13 +46,11 @@ const initialState = {
             0: {
               id: 0,
               description: 'card 0',
-              isExpanded: false,
               checklists: {
                 byId: {
                   0: {
                     id: 0,
                     title: 'checklistTitle 0',
-                    isEditing: false,
                     items: {
                       byId: {
                         0: {
@@ -71,7 +69,6 @@ const initialState = {
             1: {
               id: 1,
               description: 'card 1',
-              isExpanded: false,
               checklists: {
                 byId: {
 
@@ -82,7 +79,6 @@ const initialState = {
             2: {
               id: 2,
               description: 'card 2',
-              isExpanded: false,
               checklists: {
                 byId: {
 
@@ -93,7 +89,6 @@ const initialState = {
             3: {
               id: 3,
               description: 'card 3',
-              isExpanded: false,
               checklists: {
                 byId: {
 
@@ -104,7 +99,6 @@ const initialState = {
             4: {
               id: 4,
               description: 'card 4',
-              isExpanded: false,
               checklists: {
                 byId: {
 
@@ -115,7 +109,6 @@ const initialState = {
             5: {
               id: 5,
               description: 'card 5',
-              isExpanded: false,
               checklists: {
                 byId: {
 

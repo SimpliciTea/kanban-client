@@ -20,22 +20,34 @@ export default function (state = {}, action) {
 
 /* PRIMARY FUNCTIONS */
 
-const attachCard = (state, { colId, cardId }) => {
-  // get the column and it's card ids,
-  // then append the new id
-  const col = state.byId[colId];
-  const updatedCardIds = [...col.cardIds, cardId];
+const attachCard = (state, { colId, cardId, orderId }) => {
+  const cardIds = state.byId[colId].cardIds;
+  let updatedCardIds;
 
+  // if orderId = null,
+  // -- create new cardIds array with cardId appended to end
+  // else if orderId is specified (non-null)
+  // -- use orderId to slice our card into cardIds at index orderId
+  if (orderId === null) {
+    updatedCardIds = [ ...cardIds, cardId];
+  } else {
+    updatedCardIds = [ 
+      ...cardIds.slice(0, orderId),
+      cardId,
+      ...cardIds.slice(orderId)
+    ];
+  }
+
+  // merge new state
   return mergeUpdatedCardIds(state, colId, updatedCardIds);
 }
 
 const detachCard = (state, { colId, cardId }) => {
-  // get the column by it's id
-  const col = state.byId[colId];
+  // create new cardIds array with cardId filtered out
+  const updatedCardIds = state.byId[colId].cardIds
+    .filter(id => id !== cardId);
 
-  // filter out the card from col's carIds array
-  const updatedCardIds = col.cardIds.filter(id => id !== cardId);
-
+  // merge new state
   return mergeUpdatedCardIds(state, colId, updatedCardIds);
 }
 

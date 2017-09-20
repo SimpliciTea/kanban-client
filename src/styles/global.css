@@ -8,6 +8,9 @@ body {
   font-family: sans-serif;
 }
 
+
+
+/* BOARD STYLES */
 .board-view {
   width: 100vw;
   height: 100vh;
@@ -22,12 +25,16 @@ body {
 
 
 
+/* SIDEBAR STYLES */
 .sidebar {
   width: 200px;
   padding: 3%;
   background-color: rgba(255,255,255,0.7);
 }
 
+
+
+/* COLUMN STYLES */
 .column-container {
   display: flex;
   justify-content: space-between;
@@ -47,6 +54,9 @@ body {
   border-bottom: solid 1px white;
 }
 
+
+
+/* CARD STYLES */
 .card-list {
   list-style: none;
   margin: 0px;
@@ -54,11 +64,199 @@ body {
 }
 
 .card {
-  margin: 10px 0px;
+  margin: 0px;
   background-color: white;
   padding: 5px;
+  position: relative;
+}
+
+.card.is-dragging {
+  opacity: 0.6;
+  height: 70px;
+  overflow: hidden;
+}
+
+.card_description-text {
+  font-weight: bold;
+}
+
+.card_description-container {
+  display: flex;
+  cursor: grab;
+  border-bottom: 1px solid grey;
+}
+
+.card_description-container .editable-field_container {
+  flex-grow: 1;
+}
+
+.card_controls {
+  overflow: auto;
+  width: 100%;
 }
 
 .card-control--delete {
+  flex-grow: 0;
+  cursor: pointer;
+}
+
+.card-control--toggle-expand {
   float: right;
 }
+
+span.placeholder {
+  font-size: 0.8em;
+  color: grey;
+}
+
+
+
+/* CHECKLIST STYLES */
+
+.checklist_container {
+  margin: 20px 0px;
+  font-size: 14px;
+}
+
+.checklist_title-container {
+  background-color: #eee;
+  font-weight: bold;
+  display: flex;
+  padding: 3px;
+}
+
+.checklist_title-text {
+  flex-grow: 1;
+}
+
+.checklist_control--delete-checklist {
+  flex-grow: 0;
+  cursor: pointer;
+}
+
+.checklist_control--add-item {
+  cursor: pointer;
+  display: block;
+  margin: 0px auto;
+}
+
+.checklist_items {
+  margin: 0px;
+  padding: 3px;
+  list-style: none;
+}
+
+.checklist-item_container {
+  display: flex;
+  position: relative;
+}
+
+.checklist-item_container .editable-field_container {
+  flex-grow: 1;
+  font-size: 13px;
+  line-height: 20px;
+  padding: 0px 3px;
+}
+
+.checklist-item_container > input,
+.checklist_control--delete-item {
+  flex-grow: 0;
+  flex-shrink: 0;
+  margin: 3px 0px;
+}
+
+.checklist_control--delete-item {
+  position: absolute;
+  display: none;
+  opacity: 0.5;
+  top: 0px;
+  right: 0px;
+  background-color: rgba(0,0,0,0.2);
+  height: 18px;
+  width: 18px;
+  padding: 1px;
+  border-radius: 2px;
+  cursor: pointer;
+}
+
+.checklist-item_container:hover .checklist_control--delete-item {
+  display: initial;
+}
+
+.checklist_control--delete-item:hover {
+  opacity: 1;
+}
+
+.checklist-item_container > input {
+  margin-top: 2px;
+}
+
+.checklist-item_container input:checked + span {
+  color: grey;
+  text-decoration: line-through;
+}
+
+
+
+/* drop-frame styles */
+.drop-frame.bachelor {
+  height: 10px;
+  width: 100%;
+  position: relative;
+}
+
+/* 
+  
+  drop frame ::before has height that adjusts
+  with the drop-frames as they expand with a card hanging over them
+
+  the idea is to expand the zone in which a drop-frame responds to overlap the bottom of the card above the drop zone
+
+  the Board element gets a classname when a card is being dragged. 
+
+  When no card is being dragged, the DropZone's ::before and ::after are positioned behind card contents, so as to not interfere with clicking
+  on card buttons/elements.
+
+  When a card is being dragged, the DropZone's ::before and ::after are positioned in front of card contents so that the onDragEnter events
+  can be fired.
+
+*/
+
+.drop-frame.bachelor::before {
+  content: '';
+  position: absolute;
+  z-index: -1;
+  top: -20px;
+  height:20px;
+  width: 100%;
+}
+
+.drop-frame.bachelor.has-overlord::before {
+  height: 30px;
+  top: -30px;
+}
+
+/* expand the bottom of the drop zone targetability
+   to include just the margin beneath the drop zone */
+.drop-frame.bachelor.has-overlord::after {
+  content: '';
+  position: absolute;
+  bottom: -10px;
+  height: 10px;
+  width: 100%;
+}
+
+/* long selector is long (looking forward to rewriting with sass) */
+.board.has-dragging-card .drop-frame.bachelor::before {
+  z-index: initial;
+}
+
+.drop-frame.has-overlord {
+  height: 70px;
+  border: 1px dashed grey;
+  margin: 10px 0px;
+}
+
+
+
+
