@@ -91,7 +91,6 @@ class Card extends React.Component {
   handleCancelEditingDescription = () => this.setState({ isEditingDescription: false })
   handleDoneEditingDescription = (value) => {
     this.setState({ isEditingDescription: false });
-    this.handleDescendantDoneEditing();
     this.props.updateCardDescription(
       this.props.boardId,
       this.props.id,
