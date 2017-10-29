@@ -1,12 +1,12 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
-import * as actions from '../../actions/boardActions';
+import * as actions from '../../../actions/boardActions';
 
 // components
 import Checklist from '../checklist/Checklist';
 import CardControls from './_controls';
-import EditableField from '../editable-field/EditableField';
+import EditableField from '../../editable-field/EditableField';
 
 import {
   X

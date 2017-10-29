@@ -2,12 +2,12 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 
-import EditableField from '../editable-field/EditableField';
+import EditableField from '../../editable-field/EditableField';
 import {
   X
 } from 'react-feather';
 
-import * as actions from '../../actions/boardActions';
+import * as actions from '../../../actions/boardActions';
 
 
 class ChecklistItem extends React.Component {

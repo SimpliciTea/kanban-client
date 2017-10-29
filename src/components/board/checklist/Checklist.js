@@ -3,14 +3,14 @@ import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 
 import ChecklistItem from './_item';
-import EditableField from '../editable-field/EditableField';
+import EditableField from '../../editable-field/EditableField';
 
 import {
   Plus,
   X
 }  from 'react-feather';
 
-import * as actions from '../../actions/boardActions';
+import * as actions from '../../../actions/boardActions';
 
 
 class Checklist extends React.Component {
