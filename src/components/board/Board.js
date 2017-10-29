@@ -4,7 +4,7 @@ import PropTypes from 'prop-types';
 
 import * as actions from '../../actions/boardActions';
 
-import Column from '../column/Column';
+import Column from './column/Column';
 import EditableField from '../editable-field/EditableField';
 
 class Board extends React.Component {

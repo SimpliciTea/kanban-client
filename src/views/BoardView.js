@@ -3,7 +3,7 @@ import { Switch, Route } from 'react-router-dom';
 
 import BoardIndex from '../components/board-index/BoardIndex';
 import Board from '../components/board/Board';
-import Sidebar from '../components/sidebar/Sidebar';
+import Sidebar from '../components/board/sidebar/Sidebar';
 
 class BoardView extends React.Component {
 

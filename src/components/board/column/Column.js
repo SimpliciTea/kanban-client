@@ -1,7 +1,7 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
-import * as actions from '../../actions/boardActions';
+import * as actions from '../../../actions/boardActions';
 
 import Card from '../card/Card';
 import DropFrame from './_dropframe';

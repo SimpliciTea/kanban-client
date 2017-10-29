@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 
 
-import * as actions from '../../actions/boardActions';
+import * as actions from '../../../actions/boardActions';
 
 
 class DropFrame extends React.Component {
