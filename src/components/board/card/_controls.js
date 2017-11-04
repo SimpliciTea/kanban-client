@@ -24,7 +24,7 @@ const Controls = (props) => {
       {props.isExpanded &&
         <div className="card-control card-control--add-checklist"
              onClick={props.handleAddChecklist}>
-          <Plus size={14} />
+          <Plus size={12} />
           <List size={16} />
         </div>
       }

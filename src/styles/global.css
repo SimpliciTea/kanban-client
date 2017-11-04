@@ -12,15 +12,80 @@ body {
 
 /* BOARD STYLES */
 .board-view {
-  width: 100vw;
-  height: 100vh;
+  max-width: 100%;
+  min-height: 100vh;
   background-color: #2098ae;
   display: flex;
+  flex-direction: column;
+}
+
+.board-view__main {
+  display: flex;
+  flex-grow: 1;
+  height: 100%;
+}
+
+.board-view__main h1 {
+  margin-top: 15px;
+  border-bottom: 1px solid rgba(255,255,255,0.7);
 }
 
 .board {
   flex-grow: 1;
-  padding: 3%;
+  height: 100%;
+  padding: 0px 3% 3%;
+}
+
+/* board-nav */
+.board-nav ul {
+  display: flex;
+  padding: 0 calc(calc(100vw - 200px) * .03);
+  margin-bottom: 0px;
+  align-items: flex-end;
+  width: 100%;
+  list-style: none;
+  border-bottom: 2px solid white;
+}
+
+.board-nav li {
+  padding: 10px 20px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  width: 100px;
+  height: calc(1em + 20px);
+  background-color: rgba(255,255,255,0.7);
+  cursor: pointer;
+}
+
+.board-nav li.board-control--add-board {
+  width: 24px;
+  height: 24px;
+  padding: 2px;
+  background-color: rgb(40,40,40);
+  color: white;
+  border-bottom-width: 0px;
+}
+
+.board-nav li.board-control--add-board:hover {
+  background-color: rgb(60,60,60);
+}
+
+.board-nav li:not(:first-child) {
+  margin-left: 6px;
+}
+
+.board-nav li:hover {
+  background-color: rgba(255,255,255,0.9);
+}
+
+.board-nav li.active {
+  font-weight: bold;
+  width: auto;
+  overflow: initial;
+  text-overflow: initial;
+  cursor: initial;
+  background-color: rgba(255,255,255,0.9);
 }
 
 
@@ -28,7 +93,7 @@ body {
 /* SIDEBAR STYLES */
 .sidebar {
   width: 200px;
-  padding: 3%;
+  padding: 0% 3% 3%;
   background-color: rgba(255,255,255,0.7);
 }
 
@@ -54,7 +119,19 @@ body {
   border-bottom: solid 1px white;
 }
 
+.column-control--add-card {
+  display: inline-block;
+  height: 24px;
+  width: 24px;
+  padding: 2px;
+  background-color: rgb(40,40,40);
+  color: white;
+  cursor: pointer;
+}
 
+.column-control--add-card:hover {
+  background-color: rgb(60,60,60);
+}
 
 /* CARD STYLES */
 .card-list {
@@ -83,7 +160,7 @@ body {
 .card_description-container {
   display: flex;
   cursor: grab;
-  border-bottom: 1px solid grey;
+  border-bottom: 1px solid rgb(150,150,150);
 }
 
 .card_description-container .editable-field_container {
@@ -92,6 +169,7 @@ body {
 
 .card_controls {
   overflow: auto;
+  margin-top: 5px;
   width: 100%;
 }
 
@@ -102,6 +180,19 @@ body {
 
 .card-control--toggle-expand {
   float: right;
+  cursor: pointer;
+}
+
+.card-control--add-checklist {
+  cursor: pointer;
+}
+
+.card-control--add-checklist svg:first-child {
+  position: relative;
+  top: -5px;
+  background-color: white;
+  color: green;
+  margin-right: -6px;
 }
 
 span.placeholder {
@@ -129,6 +220,13 @@ span.placeholder {
   flex-grow: 1;
 }
 
+.checklist_items {
+  border-bottom: 1px solid rgb(150,150,150);
+  padding: 5px 0px 15px;
+  margin: 0px;
+  list-style: none;
+}
+
 .checklist_control--delete-checklist {
   flex-grow: 0;
   cursor: pointer;
@@ -136,19 +234,25 @@ span.placeholder {
 
 .checklist_control--add-item {
   cursor: pointer;
-  display: block;
+  position: relative;
+  top: -16px;
+  display: inline-block;
   margin: 0px auto;
-}
-
-.checklist_items {
-  margin: 0px;
-  padding: 3px;
-  list-style: none;
+  width: 30px;
+  height: 30px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: white;
+  border-bottom: 2px solid black;
+  border-radius: 50%;
 }
 
 .checklist-item_container {
   display: flex;
+  z-index: 1;
   position: relative;
+  margin: 8px 0px;
 }
 
 .checklist-item_container .editable-field_container {
@@ -168,6 +272,7 @@ span.placeholder {
 .checklist_control--delete-item {
   position: absolute;
   display: none;
+  z-index: 2;
   opacity: 0.5;
   top: 0px;
   right: 0px;
@@ -181,6 +286,7 @@ span.placeholder {
 
 .checklist-item_container:hover .checklist_control--delete-item {
   display: initial;
+  z-index: 2;
 }
 
 .checklist_control--delete-item:hover {
@@ -191,7 +297,7 @@ span.placeholder {
   margin-top: 2px;
 }
 
-.checklist-item_container input:checked + span {
+.checklist-item_container input:checked + div span {
   color: grey;
   text-decoration: line-through;
 }

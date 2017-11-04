@@ -5,11 +5,13 @@ import * as actions from '../../../actions/boardActions';
 
 import Card from '../card/Card';
 import DropFrame from './_dropframe';
+import { Plus } from 'react-feather';
+
 
 class Column extends React.Component {
   static propTypes = {
     id: PropTypes.number.isRequired,
-    boardId: PropTypes.number.isRequired,
+    boardId: PropTypes.string.isRequired,
     title: PropTypes.string,
     cardIds: PropTypes.arrayOf(PropTypes.number),
     createCard: PropTypes.func.isRequired,
@@ -47,7 +49,10 @@ class Column extends React.Component {
         </ul>
 
         <div className="column-controls">
-          <button onClick={this.handleAddCard.bind(this)}>+</button>
+          <span className="column-control column-control--add-card"
+                onClick={this.handleAddCard.bind(this)}>
+            <Plus size={20} />
+          </span>
         </div>
       </div>
     )

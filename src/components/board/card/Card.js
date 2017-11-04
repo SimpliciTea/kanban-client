@@ -30,7 +30,7 @@ class Card extends React.Component {
 
   static propTypes = {
     id: PropTypes.number.isRequired,
-    boardId: PropTypes.number.isRequired,
+    boardId: PropTypes.string.isRequired,
     colId: PropTypes.number.isRequired,
     description: PropTypes.string,
     deleteCard: PropTypes.func.isRequired,

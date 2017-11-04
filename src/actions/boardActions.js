@@ -1,11 +1,18 @@
+import axios from 'axios';
+import config from '../config';
+
 import {
+  FETCH_BOARDS,
+  FETCH_BOARDS_FAILURE,
+  FETCH_BOARDS_SUCCESS,
   UPDATE_BOARD_TITLE,
+  SELECT_ACTIVE_BOARD,
+  ATTACH_BOARD,
   CREATE_CARD,
   DELETE_CARD,
   UPDATE_CARD_DESCRIPTION,
   ATTACH_CARD,
   DETACH_CARD,
-  DROP_CARD_ON_FRAME,
   ADD_CHECKLIST,
   DELETE_CHECKLIST,
   UPDATE_CHECKLIST_TITLE,
@@ -13,7 +20,10 @@ import {
   ADD_CHECKLIST_ITEM,
   UPDATE_CHECKLIST_ITEM_TEXT,
   DELETE_CHECKLIST_ITEM
-} from './types'; 
+} from './types';
+
+const ROOT_URL = config.api.url; 
+
 
 
 /* 
@@ -28,8 +38,29 @@ import {
 
 /*
   BOARD ACTIONS
+  -- fetchBoards
   -- updateBoardTitle
+  -- selectActiveBoard
+  -- addBoard
 */
+
+export function fetchBoards(email) {
+  return (dispatch) => {
+    dispatch({ type: FETCH_BOARDS })
+
+    axios.post(`${ROOT_URL}/boards/read`, {email}).then(response => {
+      dispatch({
+        type: FETCH_BOARDS_SUCCESS,
+        payload: {
+          boards: response.data
+        }
+      })
+    }).catch(response => {
+      dispatch({ type: FETCH_BOARDS_FAILURE });
+      console.log('failed to fetch boards: ', response)
+    })
+  }
+}
 
 export function updateBoardTitle(boardId, value) {
   return {
@@ -39,6 +70,34 @@ export function updateBoardTitle(boardId, value) {
       value
     }
   }
+}
+
+export function selectActiveBoard(boardId) {
+  return {
+    type: SELECT_ACTIVE_BOARD,
+    payload: {
+      boardId
+    }
+  }
+}
+
+export function createBoard(user) {
+  return (dispatch) => {
+    axios.post(`${ROOT_URL}/boards/create`, {email: user}).then(response => {
+      dispatch({
+        type: ATTACH_BOARD,
+        payload: {
+          board: response.data
+        }
+      })
+    }).catch(err => {
+      console.log('Error creating new board: ', err);
+    })
+  }
+}
+
+export function attachBoard(board) {
+
 }
 
 
@@ -104,11 +163,11 @@ export function dropCardOnFrame(
 export function createCard(boardId, colId) {
   return (dispatch, getState) => {
     const cardIds = getState().boards.byId[boardId].cards.allIds;
-    
+    console.log(cardIds);
     // calculate next available cardId
     // -- if cardIds is an emtpy array [], returns nextId of 1
     const nextId = Math.max(...cardIds) + 1;
-    
+    console.log(nextId);
 
     // add card to board's card list
     dispatch({

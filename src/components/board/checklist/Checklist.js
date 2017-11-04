@@ -95,10 +95,9 @@ class Checklist extends React.Component {
           )}
         </ul>
 
-        <div className="checklist_control">
-          <Plus size={16}
-                className="checklist_control--add-item"
-                onClick={this.handleAddChecklistItem.bind(this)} />
+        <div className="checklist_control--add-item"
+             onClick={this.handleAddChecklistItem.bind(this)}>
+          <Plus size={16} />
         </div>
       </div>
     )

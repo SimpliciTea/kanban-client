@@ -67,7 +67,7 @@ class ChecklistItem extends React.Component {
     return (
       <li className="checklist-item_container">
         <input type="checkbox"
-               checked={this.props.isChecked} 
+               defaultChecked={this.props.isChecked} 
                onClick={this.onCheckItem.bind(this)} />
 
         <EditableField value={this.props.text}

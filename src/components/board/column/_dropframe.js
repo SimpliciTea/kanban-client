@@ -34,11 +34,12 @@ class DropFrame extends React.Component {
 
   handleOnDragOver(e) {
     e.preventDefault();
+    console.log(e);
   }
 
   handleOnDrop(e) {
     let sourceIds;
-
+    console.log(e);
     // every outcome flips hasOverlord to false
     this.setState({ hasOverlord: false });
 
@@ -60,9 +61,10 @@ class DropFrame extends React.Component {
       // check to make sure the right property names were passed
       // with the right types of data
       let props = ['sourceBoardId', 'sourceColId', 'sourceCardId'];
-      const isValid = props.every(prop =>
-        sourceIds.hasOwnProperty(prop) && typeof sourceIds[prop] === 'number'
-      );
+      const isValid = props.every(prop => sourceIds.hasOwnProperty(prop) && (
+        (['sourceColId', 'sourceCardId'].includes(prop) && typeof sourceIds[prop] === 'number') ||
+        ('sourceBoardId' === prop && typeof sourceIds[prop] === 'string')
+      ));
 
       // squeak n boot if it's not the desired data format
       if (!isValid) {

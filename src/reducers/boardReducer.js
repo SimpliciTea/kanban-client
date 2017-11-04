@@ -2,12 +2,21 @@ import columnReducer from './columnReducer';
 import cardReducer from './cardReducer';
 
 import {
+  // boards
+  FETCH_BOARDS_SUCCESS,
   UPDATE_BOARD_TITLE,
+  SELECT_ACTIVE_BOARD,
+  POST_BOARD_UPDATE,
+  ATTACH_BOARD,
+
+  // cards
   CREATE_CARD,
   DELETE_CARD,
   UPDATE_CARD_DESCRIPTION,
   ATTACH_CARD,
   DETACH_CARD,
+
+  // checklists
   ADD_CHECKLIST,
   DELETE_CHECKLIST,
   UPDATE_CHECKLIST_TITLE,
@@ -66,6 +75,14 @@ export default function (state = {}, action) {
 
     case UPDATE_BOARD_TITLE:
       return updateBoardTitle(state, action.payload);
+    case FETCH_BOARDS_SUCCESS:
+      return hydrateBoardsFromServer(state, action.payload);
+    case SELECT_ACTIVE_BOARD:
+      return selectActiveBoard(state, action.payload);
+    case ATTACH_BOARD:
+      return attachBoard(state, action.payload);
+    case POST_BOARD_UPDATE:
+      return postBoardUpdate(state);
     default: 
       return state;
   }
@@ -73,6 +90,22 @@ export default function (state = {}, action) {
 
 
 /* PRIMARY FUNCTIONS */
+
+const hydrateBoardsFromServer = (state, { boards }) => {
+  const allIds = [];
+  
+  return {
+    activeBoardId: boards[0].id,
+    lastFetched: new Date().getTime(),
+    byId: boards.reduce((acc, curr) => {
+      acc[curr.id] = curr;
+      allIds.push(curr.id);
+      return acc;
+    }, {}),
+    allIds
+  }
+}
+
 
 const updateBoardTitle = (boards, { boardId, value }) => {
   
@@ -90,4 +123,32 @@ const updateBoardTitle = (boards, { boardId, value }) => {
       [boardId]: nextBoard
     }
   };
+}
+
+
+const selectActiveBoard = (boards, {boardId}) => {
+  return {
+    ...boards,
+    activeBoardId: boardId
+  }
+}
+
+
+const attachBoard = (boards, {board}) => {
+  console.log(board);
+
+  return {
+    ...boards,
+    byId: {
+      ...boards.byId,
+      [board.id]: board
+    },
+    allIds: [...boards.allIds, board.id],
+    activeBoardId: board.id
+  }
+}
+
+
+const postBoardUpdate = (boards, { boardId }) => {
+  console.log('update hook');
 }
