@@ -1,26 +1,51 @@
 import React from 'react';
-import { Switch, Route } from 'react-router-dom';
+import { connect } from 'react-redux';
 
-import BoardIndex from '../components/board-index/BoardIndex';
+import * as actions from '../actions/boardActions';
+
 import Board from '../components/board/Board';
+import Tabs from '../components/board/tabs/Tabs';
 import Sidebar from '../components/board/sidebar/Sidebar';
 
 class BoardView extends React.Component {
 
+	componentDidMount() {
+		if (this.props.boardId === null)
+			this.props.fetchBoards(this.props.user);
+	}
+
 	render() {
+		const { boardId } = this.props;
+
 		return (
 			<div className="board-view">
-				<Switch>
-					<Route exact path="/boards" component={BoardIndex} />
-					<Route path="/boards/:id" render={(props) => {
-						return <Board id={parseInt(props.match.params.id)} /> 
-					}}/> 
-				</Switch>
-				<Sidebar />
+				<Tabs />				
+				
+				<div className="board-view__main">
+					{boardId === null &&
+						<p>Loading boards...</p>}
+
+					{boardId !== null &&
+						<Board id={boardId} />} 
+					<Sidebar />
+				</div>
 			</div>
 		)
 	}
 }
 
+const mapStateToProps = state => {
+	const boardId = state.boards.activeBoardId;
 
-export default BoardView;
+	return {
+		boardId,
+		authenticated: state.auth.authenticated,
+		user: state.auth.user
+	}
+}
+
+const mapDispatchToProps = {
+	fetchBoards: actions.fetchBoards	
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(BoardView);

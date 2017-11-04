@@ -19,7 +19,7 @@ class Board extends React.Component {
 
   
   static propTypes = {
-    id: PropTypes.number.isRequired,
+    id: PropTypes.string.isRequired,
     title: PropTypes.string,
     columnIds: PropTypes.arrayOf(PropTypes.number),
     updateBoardTitle: PropTypes.func.isRequired
@@ -45,6 +45,7 @@ class Board extends React.Component {
   render() {
     const { id, columnIds, title } = this.props;
     const classNames = ["board"];
+
     this.state.hasDraggingCard && classNames.push('has-dragging-card');
 
     return (
@@ -71,11 +72,12 @@ class Board extends React.Component {
 
 
 const mapDispatchToProps = {
+  fetchBoards: actions.fetchBoards,
   updateBoardTitle: actions.updateBoardTitle
 }
 
 const mapStateToProps = (state, ownProps) => {
-  const board = state.boards.byId[ownProps.id]
+  const board = state.boards.byId[ownProps.id];
 
   return {
     title: board.title,

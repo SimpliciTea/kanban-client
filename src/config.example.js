@@ -3,7 +3,7 @@ module.exports = {
 		url: 'http://localhost:3090'
 	},
 	dummyUser: {
-		email: 'a@a.com',
-		password: 'a'
+		email: 'user@site.com',
+		password: 'password'
 	}
 }
