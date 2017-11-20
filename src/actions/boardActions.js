@@ -3,8 +3,11 @@ import config from '../config';
 
 import {
   FETCH_BOARDS,
-  FETCH_BOARDS_FAILURE,
   FETCH_BOARDS_SUCCESS,
+  FETCH_BOARDS_FAILURE,
+  POST_BOARD,
+  POST_BOARD_SUCCESS,
+  POST_BOARD_FAILURE,
   UPDATE_BOARD_TITLE,
   SELECT_ACTIVE_BOARD,
   ATTACH_BOARD,
@@ -47,43 +50,63 @@ const ROOT_URL = config.api.url;
 export function fetchBoards(email) {
   return (dispatch) => {
     dispatch({ type: FETCH_BOARDS })
+    const token = localStorage.getItem('token');
 
-    axios.post(`${ROOT_URL}/boards/read`, {email}).then(response => {
+    axios.post(`${ROOT_URL}/boards/read`, {email, auth: token}).then(response => {
+      let boards, allIds;
+
+      // if the user has no boards when this request is made,
+      // the backend creates an example board and returns that instead
+      if (response.data.hasOwnProperty('ids')) {
+        boards = response.data.boards;
+        allIds = response.data.ids;
+      } else {
+        boards = [response.data];
+        allIds = [response.data.id];
+      }
+
       dispatch({
         type: FETCH_BOARDS_SUCCESS,
         payload: {
-          boards: response.data
+          boards,
+          allIds
         }
       })
     }).catch(response => {
-      dispatch({ type: FETCH_BOARDS_FAILURE });
       console.log('failed to fetch boards: ', response)
     })
   }
 }
 
-export function updateBoardTitle(boardId, value) {
-  return {
-    type: UPDATE_BOARD_TITLE,
-    payload: {
-      boardId,
-      value
-    }
-  }
-}
+export function postBoard(boardId) {
+  return (dispatch, getState) => {
+    dispatch({ type: POST_BOARD });
+    const board = getState().boards.byId[boardId];
+    const token = localStorage.getItem('token');
 
-export function selectActiveBoard(boardId) {
-  return {
-    type: SELECT_ACTIVE_BOARD,
-    payload: {
-      boardId
-    }
+    dispatch({ type: POST_BOARD });
+
+    axios.post(`${ROOT_URL}/boards/update`, { board, auth: token }).then(response => {
+      console.log(response);
+
+      // dispatch({type: POST_BOARD_SUCCESS});
+    }).catch(response => {
+      console.log(response);
+      // if something goes wrong, notify the app
+      dispatch({ type: POST_BOARD_FAILURE });
+
+      // then fetch the users boards from server
+      const user = getState().auth.user;
+      fetchBoards(user);
+    });
   }
 }
 
 export function createBoard(user) {
+  const token = localStorage.getItem('token');
+
   return (dispatch) => {
-    axios.post(`${ROOT_URL}/boards/create`, {email: user}).then(response => {
+    axios.post(`${ROOT_URL}/boards/create`, {email: user, auth: token}).then(response => {
       dispatch({
         type: ATTACH_BOARD,
         payload: {
@@ -96,9 +119,29 @@ export function createBoard(user) {
   }
 }
 
-export function attachBoard(board) {
+export function updateBoardTitle(boardId, value) {
+  return dispatch => {
+    dispatch({
+      type: UPDATE_BOARD_TITLE,
+      payload: {
+        boardId,
+        value
+      }
+    });
 
+    dispatch(postBoard(boardId));
+  }
 }
+
+export function selectActiveBoard(boardId) {
+  return {
+    type: SELECT_ACTIVE_BOARD,
+    payload: {
+      boardId
+    }
+  }
+}
+
 
 
 /* 
@@ -110,25 +153,33 @@ export function attachBoard(board) {
 
 export function attachCard(boardId, colId, cardId, orderId = null) {
   // has an optional parameter of orderId for ordered drop operations
-  return {
-    type: ATTACH_CARD,
-    payload: {
-      boardId,
-      colId,
-      cardId,
-      orderId
-    }
+  return dispatch => {
+    dispatch({
+      type: ATTACH_CARD,
+      payload: {
+        boardId,
+        colId,
+        cardId,
+        orderId
+      }
+    });
+
+    dispatch(postBoard(boardId));
   }
 }
 
 export function detachCard(boardId, colId, cardId) {
-  return {
-    type: DETACH_CARD,
-    payload: {
-      boardId,
-      colId,
-      cardId
-    }
+  return dispatch => {
+    dispatch({
+      type: DETACH_CARD,
+      payload: {
+        boardId,
+        colId,
+        cardId
+      }
+    });
+
+    dispatch(postBoard(boardId));
   }
 }
 
@@ -147,6 +198,8 @@ export function dropCardOnFrame(
 
     // then attach card to target column with orderId specified
     dispatch(attachCard(boardId, targetColId, sourceCardId, orderId));
+  
+    dispatch(postBoard(boardId));
   }
 }
 
@@ -163,10 +216,13 @@ export function dropCardOnFrame(
 export function createCard(boardId, colId) {
   return (dispatch, getState) => {
     const cardIds = getState().boards.byId[boardId].cards.allIds;
-    console.log(cardIds);
+
     // calculate next available cardId
     // -- if cardIds is an emtpy array [], returns nextId of 1
-    const nextId = Math.max(...cardIds) + 1;
+    const nextId = (cardIds.length)
+      ? Math.max(...cardIds) + 1
+      : 0;
+
     console.log(nextId);
 
     // add card to board's card list
@@ -180,6 +236,7 @@ export function createCard(boardId, colId) {
 
     // adding a card implies attachment to a column
     // -- attach card to the column which called the function
+    // -- attachCard action with post board update
     dispatch(attachCard(boardId, colId, nextId));
   }
 }
@@ -197,17 +254,23 @@ export function deleteCard(boardId, colId, cardId) {
         cardId
       }
     });
+
+    dispatch(postBoard(boardId));
   }
 }
 
 export function updateCardDescription(boardId, cardId, value) {
-  return {
-    type: UPDATE_CARD_DESCRIPTION,
-    payload: {
-      boardId,
-      cardId,
-      value
-    }
+  return dispatch => {
+    dispatch({
+      type: UPDATE_CARD_DESCRIPTION,
+      payload: {
+        boardId,
+        cardId,
+        value
+      }
+    });
+
+    dispatch(postBoard(boardId));
   }
 }
 
@@ -225,84 +288,110 @@ export function updateCardDescription(boardId, cardId, value) {
 */
 
 export function addChecklist(boardId, cardId) {
-  return {
-    type: ADD_CHECKLIST,
-    payload: {
-      boardId,
-      cardId
-    }
+  return dispatch => {
+    dispatch({
+      type: ADD_CHECKLIST,
+      payload: {
+        boardId,
+        cardId
+      }
+    });
+
+    dispatch(postBoard(boardId));
   }
 }
 
 export function deleteChecklist(boardId, cardId, checklistId) {
-  return {
-    type: DELETE_CHECKLIST,
-    payload: {
-      boardId,
-      cardId,
-      checklistId
-    }
+  return dispatch => {
+    dispatch({
+      type: DELETE_CHECKLIST,
+      payload: {
+        boardId,
+        cardId,
+        checklistId
+      }
+    });
   }
 }
 
 export function updateChecklistTitle(boardId, cardId, checklistId, value) {
-  return {
-    type: UPDATE_CHECKLIST_TITLE,
-    payload: {
-      boardId,
-      cardId,
-      checklistId,
-      value
-    }
+  return dispatch => {
+    dispatch({
+      type: UPDATE_CHECKLIST_TITLE,
+      payload: {
+        boardId,
+        cardId,
+        checklistId,
+        value
+      }
+    });
+
+    dispatch(postBoard(boardId));
   }
 }
 
 export function toggleChecklistItem(boardId, cardId, checklistId, itemId) {
-  return {
-    type: TOGGLE_CHECKLIST_ITEM,
-    payload: {
-      boardId,
-      cardId,
-      checklistId,
-      itemId
-    }
+  return dispatch => {
+    dispatch({
+      type: TOGGLE_CHECKLIST_ITEM,
+      payload: {
+        boardId,
+        cardId,
+        checklistId,
+        itemId
+      }
+    });
+
+    dispatch(postBoard(boardId));
   }
 }
 
 export function addChecklistItem(boardId, cardId, checklistId) {
   // in this case we will get the appropriate next ID in the reducer
-  return {
-    type: ADD_CHECKLIST_ITEM,
-    payload: {
-      boardId,
-      cardId,
-      checklistId
-    }
+  return dispatch => {
+    dispatch({
+      type: ADD_CHECKLIST_ITEM,
+      payload: {
+        boardId,
+        cardId,
+        checklistId
+      }
+    });
+
+    dispatch(postBoard(boardId));
   }
 }
 
 export function updateChecklistItemText(boardId, cardId, checklistId, itemId, text) {
-  return {
-    type: UPDATE_CHECKLIST_ITEM_TEXT,
-    payload: {
-      boardId,
-      cardId,
-      checklistId,
-      itemId,
-      text
-    }
+  return dispatch => {
+    dispatch({
+      type: UPDATE_CHECKLIST_ITEM_TEXT,
+      payload: {
+        boardId,
+        cardId,
+        checklistId,
+        itemId,
+        text
+      }
+    });
+
+    dispatch(postBoard(boardId));
   }
 }
 
 export function deleteChecklistItem(boardId, cardId, checklistId, itemId) {
-  return {
-    type: DELETE_CHECKLIST_ITEM,
-    payload: {
-      boardId,
-      cardId,
-      checklistId,
-      itemId
-    }
+  return dispatch => {
+    dispatch({
+      type: DELETE_CHECKLIST_ITEM,
+      payload: {
+        boardId,
+        cardId,
+        checklistId,
+        itemId
+      }
+    });
+
+    dispatch(postBoard(boardId));
   }
 }
 

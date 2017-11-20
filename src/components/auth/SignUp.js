@@ -1,6 +1,6 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import { Redirect } from 'react-router-dom';
+import { Redirect, Link } from 'react-router-dom';
 import { Field, reduxForm } from 'redux-form';
 import * as actions from '../../actions/authActions'
 
@@ -60,16 +60,13 @@ class SignUp extends React.Component {
 
 	render() {
 		const { handleSubmit, pristine, submitting } = this.props;
-		const { from } = this.props.location.state || { from: { pathname: '/' } };
+		const { from } = this.props.location.state || { from: { pathname: '/boards' } };
 
-		if (this.props.authenticated) {
-			return (
-				<Redirect to={from}/>
-			);
-		}
 
 		return (
 			<div>
+				{this.props.authenticated && <Redirect to={from} />}
+
 				<form onSubmit={handleSubmit(this.handleFormSubmit.bind(this))}>
 					
 					<div>	
@@ -116,6 +113,8 @@ class SignUp extends React.Component {
 						</button>
 					</div>
 				</form>
+
+				<span>Already have an account? <Link to='/signin'>Sign In!</Link></span>
 			</div>
 		)
 	}

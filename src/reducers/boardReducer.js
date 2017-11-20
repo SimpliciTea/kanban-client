@@ -1,12 +1,17 @@
 import columnReducer from './columnReducer';
 import cardReducer from './cardReducer';
 
+import { initialBoardsState } from '../store';
+
 import {
   // boards
+  CLEAR_BOARDS_STATE,
   FETCH_BOARDS_SUCCESS,
+  POST_BOARD,
+  POST_BOARD_SUCCESS,
+  POST_BOARD_FAILURE,
   UPDATE_BOARD_TITLE,
   SELECT_ACTIVE_BOARD,
-  POST_BOARD_UPDATE,
   ATTACH_BOARD,
 
   // cards
@@ -73,6 +78,14 @@ export default function (state = {}, action) {
       }
     }
 
+    case CLEAR_BOARDS_STATE:
+      return initialBoardsState;
+    case POST_BOARD:
+      return { ...state, isPosting: true, postingError: false };
+    case POST_BOARD_SUCCESS:
+      return { ...state, isPosting: false, postingError: false};
+    case POST_BOARD_FAILURE:
+      return postBoardFailure(state, action.payload);
     case UPDATE_BOARD_TITLE:
       return updateBoardTitle(state, action.payload);
     case FETCH_BOARDS_SUCCESS:
@@ -81,8 +94,6 @@ export default function (state = {}, action) {
       return selectActiveBoard(state, action.payload);
     case ATTACH_BOARD:
       return attachBoard(state, action.payload);
-    case POST_BOARD_UPDATE:
-      return postBoardUpdate(state);
     default: 
       return state;
   }
@@ -91,21 +102,21 @@ export default function (state = {}, action) {
 
 /* PRIMARY FUNCTIONS */
 
-const hydrateBoardsFromServer = (state, { boards }) => {
-  const allIds = [];
-  
+const hydrateBoardsFromServer = (state, { boards, allIds }) => {
+
   return {
-    activeBoardId: boards[0].id,
+    ...state,
+    activeBoardId: state.activeBoardId || allIds[0],
     lastFetched: new Date().getTime(),
     byId: boards.reduce((acc, curr) => {
-      acc[curr.id] = curr;
-      allIds.push(curr.id);
-      return acc;
+      return {
+        ...acc,
+        [curr.id]: curr
+      }
     }, {}),
     allIds
   }
 }
-
 
 const updateBoardTitle = (boards, { boardId, value }) => {
   
@@ -125,14 +136,13 @@ const updateBoardTitle = (boards, { boardId, value }) => {
   };
 }
 
-
 const selectActiveBoard = (boards, {boardId}) => {
+  console.log(boards, boardId);
   return {
     ...boards,
     activeBoardId: boardId
   }
 }
-
 
 const attachBoard = (boards, {board}) => {
   console.log(board);
@@ -148,7 +158,13 @@ const attachBoard = (boards, {board}) => {
   }
 }
 
+const postBoardFailure = (boards) => {
+  // sets a failure flag and reverts state to what is stored on server
+  // this action is accompanied by a fetchBoards action
 
-const postBoardUpdate = (boards, { boardId }) => {
-  console.log('update hook');
+  return {
+    ...boards,
+    isPosting: false,
+    postingError: true
+  }
 }

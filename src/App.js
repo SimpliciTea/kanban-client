@@ -1,5 +1,10 @@
 import React from 'react';
-import { Route } from 'react-router-dom';
+import { connect } from 'react-redux';
+import { 
+	Route,
+	Redirect,
+	withRouter
+} from 'react-router-dom';
 
 /* COMPONENTS */
 import Header from './components/header/Header';
@@ -13,13 +18,27 @@ class App extends React.Component {
 	render() {
 		return (
 			<main>
-				<Route path={'/'} component={Header} />
-				<Route path={'/auth'} component={AuthView} />
-				<Route path={'/boards'} component={BoardView} />
+				<Header authed={this.props.authenticated} />
+				<Route path={'/'} component={AuthView} />
+				<ProtectedRoute path={'/boards'} authed={this.props.authenticated} component={BoardView} />
 			</main>
 		)
 	}
 }
 
+const ProtectedRoute = ({ component: Component, authed, ...rest }) => {
+	return (
+		<Route {...rest} render={props => authed === true
+			? <Component {...props} />
+			: <Redirect to={{pathname: '/', state: {from: props.location}}} />}
+		/>
+	)
+}
 
-export default App;
+const mapStateToProps = state => {
+	return {
+		authenticated: state.auth.authenticated
+	}
+}
+
+export default withRouter(connect(mapStateToProps)(App));

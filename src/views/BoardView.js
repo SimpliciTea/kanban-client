@@ -9,7 +9,7 @@ import Sidebar from '../components/board/sidebar/Sidebar';
 
 class BoardView extends React.Component {
 
-	componentDidMount() {
+	componentWillMount() {
 		if (this.props.boardId === null)
 			this.props.fetchBoards(this.props.user);
 	}
@@ -39,7 +39,6 @@ const mapStateToProps = state => {
 
 	return {
 		boardId,
-		authenticated: state.auth.authenticated,
 		user: state.auth.user
 	}
 }
