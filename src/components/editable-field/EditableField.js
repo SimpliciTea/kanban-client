@@ -14,7 +14,7 @@ class EditableField extends React.Component {
   // places the cursor at the end of the string when autofocused
   componentWillMount() { this.setState({ value: '' }) }
   componentDidMount() { this.setState({ value: this.props.value }) }
-
+  componentWillReceiveProps(nextProps) { this.setState({ value: nextProps.value }) }
 
   handleDoubleClick = () => { 
     this.props.editField(); 

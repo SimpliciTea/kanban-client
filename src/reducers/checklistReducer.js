@@ -34,11 +34,11 @@ export default function (state = {}, action) {
 
 /* PRIMARY FUNCTIONS */
 const addChecklist = (checklists) => {
-  
+
   // get the next checklistId
   const nextId = checklists.allIds.length 
     ? Math.max(...checklists.allIds) + 1
-    : 0; 
+    : 0;
 
   // build new checklist
   const nextChecklist = {

@@ -22,9 +22,16 @@ class Board extends React.Component {
     id: PropTypes.string.isRequired,
     title: PropTypes.string,
     columnIds: PropTypes.arrayOf(PropTypes.number),
+    isFetching: PropTypes.bool.isRequired,
+    isPosting: PropTypes.bool.isRequired,
+    fetchFailure: PropTypes.bool.isRequired,
+    postFailure: PropTypes.bool.isRequired,
     updateBoardTitle: PropTypes.func.isRequired
   }
 
+  /* TODO:
+   - fetching/posting/failure UI
+  */
 
   handleToggleBoardDragState = () => this.setState({ hasDraggingCard: !this.state.hasDraggingCard })
 
@@ -45,7 +52,7 @@ class Board extends React.Component {
   render() {
     const { id, columnIds, title } = this.props;
     const classNames = ["board"];
-
+    console.log(title);
     this.state.hasDraggingCard && classNames.push('has-dragging-card');
 
     return (
@@ -77,11 +84,16 @@ const mapDispatchToProps = {
 }
 
 const mapStateToProps = (state, ownProps) => {
-  const board = state.boards.byId[ownProps.id];
+  const { title, columns: { allIds: columnIds } } = state.boards.byId[ownProps.id];
+  const { isFetching, fetchFailure, isPosting, postFailure } = state.boards;
 
   return {
-    title: board.title,
-    columnIds: board.columns.allIds
+    title,
+    columnIds,
+    isFetching,
+    isPosting,
+    fetchFailure,
+    postFailure
   }
 }
 
