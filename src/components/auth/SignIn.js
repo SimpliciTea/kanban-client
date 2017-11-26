@@ -59,12 +59,12 @@ class SignIn extends React.Component {
 		const { from } = this.props.location.state || { from: { pathname: '/boards' } };
 
 		return (
-			<div className="auth-view">
+			<div>
 				{this.props.authenticated && <Redirect to={from} />}
 
 				<form onSubmit={handleSubmit(this.handleFormSubmit.bind(this))}>
 
-					<div>
+					<div className="form-group">
 						<label>Email</label>
 						<div>
 							<Field
@@ -76,7 +76,7 @@ class SignIn extends React.Component {
 						</div>
 					</div>
 
-					<div>
+					<div className="form-group">
 						<label>Password</label>
 						<div>
 							<Field
