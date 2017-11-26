@@ -25,7 +25,9 @@ import {
   DELETE_CHECKLIST_ITEM
 } from './types';
 
-const ROOT_URL = config.api.url; 
+const ROOT_URL = process.env.NODE_ENV === 'production' 
+  ? config.api.prod
+  : config.api.dev;
 
 
 

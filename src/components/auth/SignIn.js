@@ -59,7 +59,7 @@ class SignIn extends React.Component {
 		const { from } = this.props.location.state || { from: { pathname: '/boards' } };
 
 		return (
-			<div>
+			<div className="auth-view">
 				{this.props.authenticated && <Redirect to={from} />}
 
 				<form onSubmit={handleSubmit(this.handleFormSubmit.bind(this))}>

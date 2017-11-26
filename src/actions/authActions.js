@@ -9,7 +9,9 @@ import {
 	CLEAR_BOARDS_STATE
 } from './types';
 
-const ROOT_URL = config.api.url;
+const ROOT_URL = process.env.NODE_ENV === 'production' 
+	? config.api.prod
+	: config.api.dev;
 
 const storeToken = (token, email) => {
 	console.log(token, email);
