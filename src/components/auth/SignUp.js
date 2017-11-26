@@ -64,12 +64,12 @@ class SignUp extends React.Component {
 
 
 		return (
-			<div className="auth-view">
+			<div>
 				{this.props.authenticated && <Redirect to={from} />}
 
 				<form onSubmit={handleSubmit(this.handleFormSubmit.bind(this))}>
 					
-					<div>	
+					<div className="form-group">	
 						<label>Email</label>
 						<div>
 							<Field
@@ -81,7 +81,7 @@ class SignUp extends React.Component {
 						</div>
 					</div>
 
-					<div>
+					<div className="form-group">
 						<label>Password</label>
 						<div>
 							<Field
@@ -93,7 +93,7 @@ class SignUp extends React.Component {
 						</div>
 					</div>
 
-					<div>
+					<div className="form-group">
 						<label>Confirm Password</label>
 						<div>
 							<Field

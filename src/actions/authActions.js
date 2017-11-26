@@ -14,7 +14,6 @@ const ROOT_URL = process.env.NODE_ENV === 'production'
 	: config.api.dev;
 
 const storeToken = (token, email) => {
-	console.log(token, email);
 	localStorage.setItem('token', token);
 	localStorage.setItem('dateForToken', Date.now());
 	localStorage.setItem('emailForToken', email);
@@ -33,7 +32,7 @@ export function signupUser({ email, password }) {
 				}
 			});
 		}).catch(err => {
-			dispatch(authError(err));
+			dispatch(authError(err.response.data.error));
 		});
 	}
 }
@@ -51,8 +50,7 @@ export function signinUser({ email, password }) {
 				}
 			});
 		}).catch(response => {
-			console.log('auth error: ', response);
-			dispatch(authError('Bad Login Info'));
+			dispatch(authError('No match found for given credentials.'));
 		});
 	}
 }
