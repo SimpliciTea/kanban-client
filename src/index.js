@@ -5,7 +5,6 @@ import { BrowserRouter } from 'react-router-dom';
 
 import store from './store';
 import './styles/global.css';
-import registerServiceWorker from './registerServiceWorker';
 
 // Components
 import App from './App';
@@ -19,5 +18,3 @@ ReactDOM.render(
   </Provider>, 
   document.getElementById('root')
 );
-
-registerServiceWorker();

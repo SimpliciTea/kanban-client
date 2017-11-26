@@ -12,7 +12,7 @@ class SignOut extends React.Component {
 
 	render() {
 		return (
-			<div>Bye now!</div>
+			<Redirect to={'/'} />
 		)
 	}
 }

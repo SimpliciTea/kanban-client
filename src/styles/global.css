@@ -1,20 +1,51 @@
 * {
   box-sizing: border-box;
+  font-family: Ubuntu, sans-serif;
 }
 
 body {
   margin: 0px;
   padding: 0px;
+  /*background-color: #2098ae;*/
+  background-color: #3f3f3f;
   font-family: sans-serif;
 }
 
+a {
+  color: #b0d8da;
+}
 
+a:visited {
+  color: #6878cc;
+}
+
+nav.site-nav {
+  padding: 10px calc(calc(100vw - 200px) * .03);
+  margin-bottom: 10px;
+  background-color: rgba(255,255,255,0.1);
+  display: flex;
+  justify-content: flex-end;
+  color: white;
+}
+
+nav.site-nav a {
+  color: white;
+}
+
+/* AUTH VIEW STYLES */
+.auth-view {
+  color: white;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  min-height: 100vh;
+  align-items: center;
+}
 
 /* BOARD STYLES */
 .board-view {
   max-width: 100%;
   min-height: 100vh;
-  background-color: #2098ae;
   display: flex;
   flex-direction: column;
 }
@@ -27,6 +58,7 @@ body {
 
 .board-view__main h1 {
   margin-top: 15px;
+  color: white;
   border-bottom: 1px solid rgba(255,255,255,0.7);
 }
 
@@ -109,7 +141,7 @@ body {
   width: 31%;
   padding: 10px;
   height: auto;
-  background-color: rgba(255,255,255,0.5);
+  background-color: rgba(255,255,255,0.4);
 }
 
 .column-header {
