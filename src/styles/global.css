@@ -7,8 +7,8 @@ body {
   margin: 0px;
   padding: 0px;
   min-width: 800px;
-  /*background-color: #2098ae;*/
-  background-color: #3f3f3f;
+  background-color: #2098ae;
+  /*background-color: #3f3f3f;*/
   font-family: sans-serif;
 }
 
@@ -22,11 +22,12 @@ a:visited {
 }
 
 nav.site-nav {
-  padding: 10px calc(calc(100vw - 200px) * .03);
-  margin-bottom: 10px;
   background-color: rgba(255,255,255,0.1);
+  height: 40px;
+  padding: 10px 15px;
   display: flex;
   justify-content: flex-end;
+  align-items: center;
   color: white;
 }
 
@@ -36,6 +37,7 @@ nav.site-nav a {
 
 /* AUTH VIEW STYLES */
 .auth-view {
+  background-color: #3f3f3f;
   color: white;
   display: flex;
   flex-direction: column;
@@ -69,7 +71,8 @@ nav.site-nav a {
   text-align: center;
   margin: 0px;
   padding: 10px 0px;
-  background-color: rgba(255,255,255,0.3);
+  /*background-color: rgba(255,255,255,0.3);*/
+  background-color: #2098ae;
   border-width: 5px 0px;
   border-color: rgba(255,255,255,0.2);
   border-style: solid;
@@ -115,7 +118,7 @@ nav.site-nav a {
 .auth-modal .form-group span {
   display: block;
   margin-top: 4px;
-  color: red;
+  color: #ff8000;
   font-size: 12px;
   text-transform: lowercase;
   font-weight: bold;
@@ -123,12 +126,22 @@ nav.site-nav a {
 
 .auth-modal button {
   width: 100%;
-  background-color: #6878cc;
+  /*background-color: #6878cc;*/
+  background-color: #2098ae;
   color: white;
+  cursor: pointer;
   font-weight: bold;
   border: none;
   margin: 30px 0px 0px;
   padding: 15px;
+}
+
+.auth-modal button:hover {
+  background-color: #36a2b6;
+}
+
+.auth-modal button:active {
+  background-color: #1c889c;
 }
 
 .auth-tip {
@@ -138,7 +151,7 @@ nav.site-nav a {
 /* BOARD STYLES */
 .board-view {
   max-width: 100%;
-  min-height: 100vh;
+  min-height: calc(100vh - 40px);
   display: flex;
   flex-direction: column;
 }
@@ -194,6 +207,7 @@ nav.site-nav a {
 
 .board-nav li.board-control--add-board:hover {
   background-color: rgb(60,60,60);
+  border-top: none;
 }
 
 .board-nav li:not(:first-child) {
@@ -219,9 +233,18 @@ nav.site-nav a {
 
 /* SIDEBAR STYLES */
 .sidebar {
-  width: 200px;
-  padding: 0% 3% 3%;
+  width: 300px;
+  padding: 15px;
   background-color: rgba(255,255,255,0.7);
+}
+
+.sidebar h3 {
+  margin-top: 0px;
+}
+
+.sidebar a {
+  color: #2098ae;
+  font-weight: bold;
 }
 
 
